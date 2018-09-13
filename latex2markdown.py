@@ -1,5 +1,37 @@
+#coding=utf-8
 import re
 from collections import defaultdict
+from xml.etree import ElementTree as ET
+
+tree = ET.parse("./charmap.xml")
+root = tree.getroot()
+
+def convert_lable_to_character_entity(lable):
+    var = lable.group()
+    regx = r"./char[@string='%s']" % var
+    charNodes = root.findall(regx)
+    if len(charNodes) > 0:
+        ret = charNodes[0].attrib['character'].encode("utf-8")
+        return ret
+    return var
+
+def convert_table(table):
+    ret = ''
+    is_head = True
+    for line in table.split("\n"):
+        if '&' in line:
+            line =re.sub(r"\\\\+$", '', line)
+            values = line.replace("&", "|")
+            values = "|%s|\n" % values
+            ret += values
+            if is_head:
+                split_line = re.sub(r'[^\|]', r"-", values)
+                split_line = re.sub(r'(\|-)$', r"|", split_line)
+                ret += split_line + '\n'
+                is_head = False
+    return ret
+
+
 
 #------------------------------------------------------------------------------
 
@@ -251,9 +283,23 @@ class LaTeX2Markdown(object):
         output = re.sub(r"align\*", r"align", output)
 
         # Fix emph, textbf, texttt formatting
+        output = re.sub(r"~", convert_lable_to_character_entity, output)
+        output = re.sub(r"\$\{\\[Uu]ppi\}\$", convert_lable_to_character_entity, output)
+        output = re.sub(r"\$\{\\upalpha\}\$", convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textbar}", convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textless}", convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textgreater}", convert_lable_to_character_entity, output)
+        output = re.sub(r"\\textasciicircum{(.*?)}", convert_lable_to_character_entity, output)
+        output = re.sub(r"\\textasciitilde{(.*?)}", convert_lable_to_character_entity, output)
         output = re.sub(r"\\emph{(.*?)}", r"*\1*", output)
-        output = re.sub(r"\\textbf{(.*?)}", r"**\1**", output)
-        output = re.sub(r"\\texttt{(.*?)}", r"`\1`", output)
+        output = re.sub(r"\\textit\{[^{^}]*}", self.gen_dolor, output)
+        output = re.sub(r"\\textbf{(.*?)}", r"**\1** ", output)
+        output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
+        output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", convert_lable_to_character_entity, output)
+        output = re.sub(r"\\ding{(.*?)}", convert_lable_to_character_entity, output)
+        output = re.sub(r"\\includegraphics\[[^\[^\]]+\]\{[^\{^\}]*\}", self.replace_LaTex_img_url, output)
+        output = re.sub(r"``[^`^']+''", self.replace_quotation_marks, output)
+        output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
 
         # Fix \% formatting
         output = re.sub(r"\\%", r"%", output)
@@ -268,16 +314,47 @@ class LaTeX2Markdown(object):
     def to_markdown(self):
         return self._latex_to_markdown()
 
+    def gen_dolor(self, matched):
+        source = matched.group()
+        ret = re.findall(r"(?<=\{)(.+?)(?=\})", source)
+        if len(ret) > 0:
+            return " $%s$ " % ret[0]
+        return source
+
+    def gen_table(self, matched):
+        source = matched.group()
+
+
+    def replace_LaTex_img_url(self, matched):
+        graphic = matched.group()
+        url = re.findall(r"(?<=\{)(.+?)(?=\})", graphic)
+        if len(url) > 0:
+            return  "![](%s)" % url[0]
+        return graphic
+
+    def replace_quotation_marks(self, matched):
+        value = matched.group()
+        value = value.replace("``", "").replace("''", "")
+        return '''"%s"''' % value
+
+    def replace_laTex_table(self, matched):
+        table = matched.group()
+        ret = convert_table(table)
+        return ret
+
     def to_latex(self):
         return self._latex_string
+
 
 #------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) == 1:
-        input_file = "bin/latex_sample.tex"
-        output_file = "bin/converted_latex_sample.md"
+        # input_file = "bin/latex_sample.tex"
+        # output_file = "bin/converted_latex_sample.md"
+        input_file = "/Users/qintianhao/Downloads/lizong.out.tex"
+        output_file = "/Users/qintianhao/Downloads/lizong.out.md"
     else:
         input_file, output_file = sys.argv[1], sys.argv[2]
 
