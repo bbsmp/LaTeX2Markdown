@@ -1,5 +1,6 @@
 include *.txt
+include latex2markdown-bbsmp * *
+include latex2markdown-bbsmp/config/latex_sample.tex
+include latex2markdown-bbsmp/config/converted_latex_sample.md
 recursive-include docs *.txt
-recursive-include bin *.tex
-recursive-include bin *.md
 recursive-include bin *.pdf

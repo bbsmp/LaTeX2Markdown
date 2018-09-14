@@ -48,7 +48,7 @@ Choose a prime divisor $p_n$ of each Fermat number $F_n$.  By the lemma we know 
 ###  Demonstration of the environments
 
 
-We can format *italic text*, **bold text**, and `code` blocks.
+We can format *italic text*, **bold text** , and  $code$  blocks.
 
 
 
@@ -64,7 +64,7 @@ We can format *italic text*, **bold text**, and `code` blocks.
 
 #### Theorem 3
 
-> This is a theorem.  It contains an `align` block.
+> This is a theorem.  It contains an  $align$  block.
 > 
 > All math environments supported by MathJaX should work with LaTeX - a full list is available on the MathJaX homepage.
 > 

@@ -1,4 +1,5 @@
 #coding=utf-8
+
 import re
 from collections import defaultdict
 from xml.etree import ElementTree as ET
@@ -344,11 +345,13 @@ class LaTeX2Markdown(object):
 
 if __name__ == '__main__':
     import sys
-    config_xml = "config/charmap.xml"
+    import os
+    base_path = os.path.dirname(__file__) + "/latex2markdown-bbsmp"
+    config_xml = base_path + "/config/charmap.xml"
     printResult = False
-    if len(sys.argv) == 1:
-        input_file = "bin/latex_sample.tex"
-        output_file = "bin/converted_latex_sample.md"
+    if len(sys.argv) <= 1:
+        input_file = base_path + "/config/latex_sample.tex"
+        output_file = base_path + "/config/converted_latex_sample.md"
     elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
     else:
