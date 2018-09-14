@@ -9,7 +9,7 @@ setup(
         version='0.0.2',
         py_modules=['latex2markdown-bbsmp'],
         include_package_data=True,
-        packages=find_packages(),
+        packages=find_packages("."),
         install_requires=['distribute'],
         package_data={
             'latex2markdown-bbsmp': ['config/*.xml', 'config/*.tet', 'config/*.md'],

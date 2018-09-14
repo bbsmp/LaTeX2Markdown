@@ -346,7 +346,8 @@ class LaTeX2Markdown(object):
 if __name__ == '__main__':
     import sys
     import os
-    base_path = os.path.dirname(__file__) + "/latex2markdown-bbsmp"
+    # base_path = os.path.dirname(__file__) + "/latex2markdown-bbsmp"
+    base_path = os.path.dirname(__file__)
     config_xml = base_path + "/config/charmap.xml"
     printResult = False
     if len(sys.argv) <= 1:
