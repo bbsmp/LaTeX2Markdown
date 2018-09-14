@@ -360,12 +360,10 @@ if __name__ == '__main__':
         latex_string = f.read()
         y = LaTeX2Markdown(config_xml, latex_string)
         markdown_string = y.to_markdown()
-        if printResult is None:
+        if not printResult:
             with open(output_file, 'w') as f_out:
                 f_out.write(markdown_string)
         else:
-            print("md begin")
             print(markdown_string)
-            print("md end")
 
 
