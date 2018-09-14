@@ -4,5 +4,5 @@ README.txt
 latex2markdown.py
 setup.py
 bin/converted_latex_sample.md
-bin/latex_sample.pdf
 bin/latex_sample.tex
+config/charmap.xml

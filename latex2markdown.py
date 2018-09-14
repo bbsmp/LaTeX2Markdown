@@ -3,35 +3,6 @@ import re
 from collections import defaultdict
 from xml.etree import ElementTree as ET
 
-tree = ET.parse("./charmap.xml")
-root = tree.getroot()
-
-def convert_lable_to_character_entity(lable):
-    var = lable.group()
-    regx = r"./char[@string='%s']" % var
-    charNodes = root.findall(regx)
-    if len(charNodes) > 0:
-        ret = charNodes[0].attrib['character'].encode("utf-8")
-        return ret
-    return var
-
-def convert_table(table):
-    ret = ''
-    is_head = True
-    for line in table.split("\n"):
-        if '&' in line:
-            line =re.sub(r"\\\\+$", '', line)
-            values = line.replace("&", "|")
-            values = "|%s|\n" % values
-            ret += values
-            if is_head:
-                split_line = re.sub(r'[^\|]', r"-", values)
-                split_line = re.sub(r'(\|-)$', r"|", split_line)
-                ret += split_line + '\n'
-                is_head = False
-    return ret
-
-
 
 #------------------------------------------------------------------------------
 
@@ -112,13 +83,14 @@ class LaTeX2Markdown(object):
 
     To modify the outputted markdown, modify the _block_configuration variable
     before initializing the LaTeX2Markdown instance."""
-    def __init__(self,  latex_string,
+    def __init__(self,  config_path, latex_string,
                         block_configuration = _block_configuration,
                         block_counter = defaultdict(lambda: 1)):
 
         self._block_configuration = block_configuration
         self._latex_string = latex_string
         self._block_counter = block_counter
+        self._config_xml_root = ET.parse(config_path).getroot()
 
         # Precompile the regexes
 
@@ -283,20 +255,20 @@ class LaTeX2Markdown(object):
         output = re.sub(r"align\*", r"align", output)
 
         # Fix emph, textbf, texttt formatting
-        output = re.sub(r"~", convert_lable_to_character_entity, output)
-        output = re.sub(r"\$\{\\[Uu]ppi\}\$", convert_lable_to_character_entity, output)
-        output = re.sub(r"\$\{\\upalpha\}\$", convert_lable_to_character_entity, output)
-        output = re.sub(r"{\\textbar}", convert_lable_to_character_entity, output)
-        output = re.sub(r"{\\textless}", convert_lable_to_character_entity, output)
-        output = re.sub(r"{\\textgreater}", convert_lable_to_character_entity, output)
-        output = re.sub(r"\\textasciicircum{(.*?)}", convert_lable_to_character_entity, output)
-        output = re.sub(r"\\textasciitilde{(.*?)}", convert_lable_to_character_entity, output)
+        output = re.sub(r"~", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\$\{\\[Uu]ppi\}\$", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textless}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textgreater}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\\textasciicircum{(.*?)}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\\textasciitilde{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\emph{(.*?)}", r"*\1*", output)
         output = re.sub(r"\\textit\{[^{^}]*}", self.gen_dolor, output)
         output = re.sub(r"\\textbf{(.*?)}", r"**\1** ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
-        output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", convert_lable_to_character_entity, output)
-        output = re.sub(r"\\ding{(.*?)}", convert_lable_to_character_entity, output)
+        output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\\ding{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\includegraphics\[[^\[^\]]+\]\{[^\{^\}]*\}", self.replace_LaTex_img_url, output)
         output = re.sub(r"``[^`^']+''", self.replace_quotation_marks, output)
         output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
@@ -321,9 +293,6 @@ class LaTeX2Markdown(object):
             return " $%s$ " % ret[0]
         return source
 
-    def gen_table(self, matched):
-        source = matched.group()
-
 
     def replace_LaTex_img_url(self, matched):
         graphic = matched.group()
@@ -339,28 +308,64 @@ class LaTeX2Markdown(object):
 
     def replace_laTex_table(self, matched):
         table = matched.group()
-        ret = convert_table(table)
+        ret = self.convert_table(table)
         return ret
 
     def to_latex(self):
         return self._latex_string
+
+    def convert_lable_to_character_entity(self, lable):
+        var = lable.group()
+        regx = r"./char[@string='%s']" % var
+        charNodes = self._config_xml_root.findall(regx)
+        if len(charNodes) > 0:
+            ret = charNodes[0].attrib['character'].encode("utf-8")
+            return ret
+        return var
+
+    def convert_table(self, table):
+        ret = ''
+        is_head = True
+        for line in table.split("\n"):
+            if '&' in line:
+                line = re.sub(r"\\\\+$", '', line)
+                values = line.replace("&", "|")
+                values = "|%s|\n" % values
+                ret += values
+                if is_head:
+                    split_line = re.sub(r'[^\|]', r"-", values)
+                    split_line = re.sub(r'(\|-)$', r"|", split_line)
+                    ret += split_line + '\n'
+                    is_head = False
+        return ret
 
 
 #------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     import sys
+    config_xml = "config/charmap.xml"
+    printResult = False
     if len(sys.argv) == 1:
-        # input_file = "bin/latex_sample.tex"
-        # output_file = "bin/converted_latex_sample.md"
-        input_file = "/Users/qintianhao/Downloads/lizong.out.tex"
-        output_file = "/Users/qintianhao/Downloads/lizong.out.md"
-    else:
+        input_file = "bin/latex_sample.tex"
+        output_file = "bin/converted_latex_sample.md"
+    elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
+    else:
+        input_file, output_file, print_arg = sys.argv[1], sys.argv[2], sys.argv[3]
+        if print_arg is not None:
+            printResult = True
 
     with open(input_file, 'r') as f:
         latex_string = f.read()
-        y = LaTeX2Markdown(latex_string)
+        y = LaTeX2Markdown(config_xml, latex_string)
         markdown_string = y.to_markdown()
-        with open(output_file, 'w') as f_out:
-            f_out.write(markdown_string)
+        if printResult is None:
+            with open(output_file, 'w') as f_out:
+                f_out.write(markdown_string)
+        else:
+            print("md begin")
+            print(markdown_string)
+            print("md end")
+
+

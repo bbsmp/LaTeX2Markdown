@@ -6,7 +6,7 @@ setup(
         author_email="andrew@tullo.ch",
         version='0.2.1',
         py_modules=['latex2markdown'],
-        scripts=['bin/converted_latex_sample.md','bin/latex_sample.tex'],
+        scripts=['bin/converted_latex_sample.md', 'bin/latex_sample.tex', 'config/charmap.xml'],
         url="https://github.com/ajtulloch/LaTeX2Markdown",
         description="An AMS-LaTeX compatible converter that maps a subset of LaTeX to Markdown/MathJaX.",
         classifiers=[
