@@ -1,16 +1,16 @@
 from distutils.core import setup
 
 setup(
-        name='latex2markdown',
+        name='latex2markdown-bbsmp',
         author="Andrew Tulloch",
         author_email="andrew@tullo.ch",
-        version='0.2.1',
-        py_modules=['latex2markdown'],
+        version='0.0.1',
+        py_modules=['latex2markdown-bbsmp'],
         scripts=['bin/converted_latex_sample.md', 'bin/latex_sample.tex', 'config/charmap.xml'],
-        url="https://github.com/ajtulloch/LaTeX2Markdown",
-        description="An AMS-LaTeX compatible converter that maps a subset of LaTeX to Markdown/MathJaX.",
+        url="https://github.com/bbsmp/LaTeX2Markdown.git",
+        description="Thanks Andrew Tulloch, This project is forked from Andrew's masterpiece：https://github.com/ajtulloch/LaTeX2Markdown,  An AMS-LaTeX compatible converter that maps a subset of LaTeX to Markdown/MathJaX.",
         classifiers=[
-            "Development Status :: 3 - Alpha",
+            "Development Status :: Alpha",
             "Environment :: Console",
             "Programming Language :: Python",
             "Topic :: Scientific/Engineering :: Mathematics",
