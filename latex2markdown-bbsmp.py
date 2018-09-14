@@ -257,6 +257,7 @@ class LaTeX2Markdown(object):
 
         # Fix emph, textbf, texttt formatting
         output = re.sub(r"~", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\\includegraphics\[[^\[^\]^\{^\}]+\]\{[^\{^\}]+\}", self.replace_LaTex_img_url, output)
         output = re.sub(r"\$\{\\[Uu]ppi\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
@@ -266,13 +267,14 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\textasciitilde{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\emph{(.*?)}", r"*\1*", output)
         output = re.sub(r"\\textit\{[^{^}]*}", self.gen_dolor, output)
-        output = re.sub(r"\\textbf{(.*?)}", r"**\1** ", output)
+        output = re.sub(r"\\textbf{(.*?)}", r" **\1** ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
         output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\ding{(.*?)}", self.convert_lable_to_character_entity, output)
-        output = re.sub(r"\\includegraphics\[[^\[^\]]+\]\{[^\{^\}]*\}", self.replace_LaTex_img_url, output)
+        # output = re.sub(r"\\includegraphics\[[^\[^\]^\{^\}]+\]\{[^\{^\}]+\}", self.replace_LaTex_img_url, output)
         output = re.sub(r"``[^`^']+''", self.replace_quotation_marks, output)
         output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
+        output = re.sub(r'\$\{\\times\}\$', self.convert_lable_to_character_entity, output)
 
         # Fix \% formatting
         output = re.sub(r"\\%", r"%", output)
@@ -351,8 +353,10 @@ if __name__ == '__main__':
     config_xml = base_path + "/config/charmap.xml"
     printResult = False
     if len(sys.argv) <= 1:
-        input_file = base_path + "/config/latex_sample.tex"
-        output_file = base_path + "/config/converted_latex_sample.md"
+        # input_file = base_path + "/config/latex_sample.tex"
+        # output_file = base_path + "/config/converted_latex_sample.md"
+        input_file = "/Users/qintianhao/Downloads/math.tex"
+        output_file = "/Users/qintianhao/Downloads/math.md"
     elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
     else:
@@ -364,10 +368,11 @@ if __name__ == '__main__':
         latex_string = f.read()
         y = LaTeX2Markdown(config_xml, latex_string)
         markdown_string = y.to_markdown()
-        if not printResult:
-            with open(output_file, 'w') as f_out:
-                f_out.write(markdown_string)
-        else:
-            print(markdown_string)
+        # if not printResult:
+        with open(output_file, 'w') as f_out:
+            f_out.write(markdown_string)
+        # else:
+        #     print(markdown_string)
+        print(markdown_string)
 
 

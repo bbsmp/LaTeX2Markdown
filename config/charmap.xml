@@ -71,6 +71,7 @@
     <char character="&#xc6;" string="\AE{}"/>
     <!--MULTIPLICATION SIGN, z notation Cartesian product-->
     <char character="&#xd7;" string="${\times}$"/>
+    <char character="&#xd7;" string="{\times}"/>
     <!--LATIN CAPITAL LETTER O WITH STROKE -->
     <char character="&#xd8;" string="\O{}"/>
     <!--LATIN SMALL LETTER SHARP S -->
