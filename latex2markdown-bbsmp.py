@@ -353,10 +353,10 @@ if __name__ == '__main__':
     config_xml = base_path + "/config/charmap.xml"
     printResult = False
     if len(sys.argv) <= 1:
-        # input_file = base_path + "/config/latex_sample.tex"
-        # output_file = base_path + "/config/converted_latex_sample.md"
-        input_file = "/Users/qintianhao/Downloads/math.tex"
-        output_file = "/Users/qintianhao/Downloads/math.md"
+        input_file = base_path + "/config/latex_sample.tex"
+        output_file = base_path + "/config/converted_latex_sample.md"
+        # input_file = "/Users/qintianhao/Downloads/math.tex"
+        # output_file = "/Users/qintianhao/Downloads/math.md"
     elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
     else:
