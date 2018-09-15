@@ -6,7 +6,7 @@ setup(
         name='latex2markdown-bbsmp',
         author="PengMo",
         author_email="qinmetec@163.com",
-        version='0.0.2',
+        version='0.0.3',
         py_modules=['latex2markdown-bbsmp'],
         include_package_data=True,
         packages=find_packages("."),
