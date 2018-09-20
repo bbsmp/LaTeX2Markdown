@@ -261,13 +261,15 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\$\{\\[Uu]ppi\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
-        output = re.sub(r"{\\textless}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"{\\ldots}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textgreater}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\textasciicircum{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\textasciitilde{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\emph{(.*?)}", r"*\1*", output)
         output = re.sub(r"\\textit\{[^{^}]*}", self.gen_dolor, output)
         output = re.sub(r"\\textbf{(.*?)}", r" **\1** ", output)
+        output = re.sub(r"\\underline{(.*?)}", r" <u>\1</u> ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
         output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\ding{(.*?)}", self.convert_lable_to_character_entity, output)
@@ -355,8 +357,8 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         input_file = base_path + "/config/latex_sample.tex"
         output_file = base_path + "/config/converted_latex_sample.md"
-        # input_file = "/Users/qintianhao/Downloads/math.tex"
-        # output_file = "/Users/qintianhao/Downloads/math.md"
+        # input_file = "/Users/qintianhao/Downloads/tempFiles/高三语文.tex"
+        # output_file = "/Users/qintianhao/Downloads/tempFiles/高三语文.md"
     elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
     else:
