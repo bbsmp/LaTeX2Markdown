@@ -357,8 +357,6 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         input_file = base_path + "/config/latex_sample.tex"
         output_file = base_path + "/config/converted_latex_sample.md"
-        # input_file = "/Users/qintianhao/Downloads/tempFiles/高三语文.tex"
-        # output_file = "/Users/qintianhao/Downloads/tempFiles/高三语文.md"
     elif len(sys.argv) == 2:
         input_file, output_file = sys.argv[1], sys.argv[2]
     else:
