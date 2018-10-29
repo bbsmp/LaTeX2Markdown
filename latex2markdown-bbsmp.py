@@ -260,6 +260,8 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\includegraphics\[[^\[^\]^\{^\}]+\]\{[^\{^\}]+\}", self.replace_LaTex_img_url, output)
         output = re.sub(r"\$\{\\[Uu]ppi\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\$\{\\[Uu]pdelta\}\$", r"\$\{delta\}\$", output)
+        output = re.sub(r"\$\{\\[Uu]pDelta\}\$", r"\$\{Delta\}\$", output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\ldots}", self.convert_lable_to_character_entity, output)
@@ -275,9 +277,11 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\ding{(.*?)}", self.convert_lable_to_character_entity, output)
         # output = re.sub(r"\\includegraphics\[[^\[^\]^\{^\}]+\]\{[^\{^\}]+\}", self.replace_LaTex_img_url, output)
         output = re.sub(r"``[^`^']+''", self.replace_quotation_marks, output)
+        output = re.sub(r"@\d{3}[A-Z_]{2,5}\|[A-Z]\d{1,3}(\\#\d{1,3})*@", self.fix_paper_mark, output)
         output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
         output = re.sub(r'\$\{\\times\}\$', self.convert_lable_to_character_entity, output)
 
+        output = re.sub(r"\\newline", r"\n", output)
         # Fix \% formatting
         output = re.sub(r"\\%", r"%", output)
         # Fix argmax, etc.
@@ -303,8 +307,13 @@ class LaTeX2Markdown(object):
         graphic = matched.group()
         url = re.findall(r"(?<=\{)(.+?)(?=\})", graphic)
         if len(url) > 0:
-            return  "![](%s)" % url[0]
+            return "![](%s)" % url[0]
         return graphic
+
+    def fix_paper_mark(self, matched):
+        value = matched.group()
+        value = re.sub(r'\\#', r'#', value)
+        return value
 
     def replace_quotation_marks(self, matched):
         value = matched.group()
