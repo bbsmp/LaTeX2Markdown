@@ -32,13 +32,13 @@ The project is available on PyPI, so getting it is as simple as using
 
 ::
 
-    pip install latex2markdown
+    pip install latex2markdown-bbsmp
 
 or
 
 ::
 
-    easy_install latex2markdown
+    easy_install latex2markdown-bbsmp
 
 Usage
 ~~~~~
@@ -51,14 +51,14 @@ file is as follows:
 
 ::
 
-    python -m latex2markdown path/to/latex/file path/to/output/markdown/file
+    python -m latex2markdown-bbsmp path/to/latex/file path/to/output/markdown/file t
 
 For example, to compile a LaTeX file ``sample.tex`` into a Markdown file
 ``sample.md``, call
 
 ::
 
-    python -m latex2markdown sample.tex sample.md
+    python -m latex2markdown-bbsmp sample.tex sample.md
 
 To use it within a Python script (to extend it, modify output, etc.),
 you can use it as follows:
