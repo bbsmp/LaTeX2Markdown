@@ -280,6 +280,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"@\d{3}[A-Z_]{2,5}\|[A-Z]\d{1,3}(\\#\d{1,3})*@", self.fix_paper_mark, output)
         output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
         output = re.sub(r'\$\{\\times\}\$', self.convert_lable_to_character_entity, output)
+        output = re.sub(r'\$\{\\div\}\$', self.convert_lable_to_character_entity, output)
 
         output = re.sub(r"\\newline", r"\n", output)
         # Fix \% formatting
