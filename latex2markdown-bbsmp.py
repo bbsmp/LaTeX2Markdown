@@ -262,6 +262,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\$\{\\[Uu]pdelta\}\$", r"\$\{delta\}\$", output)
         output = re.sub(r"\$\{\\[Uu]pDelta\}\$", r"\$\{Delta\}\$", output)
+        output = re.sub(r"\$\{\\Updelta\}\$", r"\$\{Delta\}\$", output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\ldots}", self.convert_lable_to_character_entity, output)
