@@ -258,11 +258,14 @@ class LaTeX2Markdown(object):
         # Fix emph, textbf, texttt formatting
         output = re.sub(r"~", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\includegraphics\[[^\[^\]^\{^\}]+\]\{[^\{^\}]+\}", self.replace_LaTex_img_url, output)
-        output = re.sub(r"\$\{\\[Uu]ppi\}\$", self.convert_lable_to_character_entity, output)
-        output = re.sub(r"\$\{\\upalpha\}\$", self.convert_lable_to_character_entity, output)
-        output = re.sub(r"\$\{\\[Uu]pdelta\}\$", r"\$\{delta\}\$", output)
-        output = re.sub(r"\$\{\\[Uu]pDelta\}\$", r"\$\{Delta\}\$", output)
-        output = re.sub(r"\$\{\\Updelta\}\$", r"\$\{Delta\}\$", output)
+        output = re.sub(r"\\[u]ppi", r"\pi", output)
+        output = re.sub(r"\\Up[pP]i", r"\Pi", output)
+        output = re.sub(r"\\[Uu]Ppi", r"\Pi", output)
+        output = re.sub(r"\\[Uu]palpha", r"\alpha", output)
+        output = re.sub(r"\\[Uu]pAlpha", r"\Alpha", output)
+        output = re.sub(r"\\[u]pdelta", r"\delta", output)
+        output = re.sub(r"\\[Uu]pDelta", r"\Delta", output)
+        output = re.sub(r"\\Up[Dd]elta", r"\Delta", output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\ldots}", self.convert_lable_to_character_entity, output)
@@ -270,7 +273,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\textasciicircum{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\textasciitilde{(.*?)}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\emph{(.*?)}", r"*\1*", output)
-        output = re.sub(r"\\textit\{[^{^}]*}", self.gen_dolor, output)
+        output = re.sub(r"\\textit\{[^{^}]*\}", self.gen_dolor, output)
         output = re.sub(r"\\textbf{(.*?)}", r" **\1** ", output)
         output = re.sub(r"\\underline{(.*?)}", r" <u>\1</u> ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
@@ -301,7 +304,7 @@ class LaTeX2Markdown(object):
         source = matched.group()
         ret = re.findall(r"(?<=\{)(.+?)(?=\})", source)
         if len(ret) > 0:
-            return " $%s$ " % ret[0]
+            return "$%s$ " % ret[0]
         return source
 
 
