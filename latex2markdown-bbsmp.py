@@ -277,6 +277,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\textbf{(.*?)}", r" **\1** ", output)
         output = re.sub(r"\\raisebox{[-+0-9\\.]*pt}{(.*?)}", r" **\1** ", output)
         output = re.sub(r"\\underline{(.*?)}", r" <u>\1</u> ", output)
+        output = re.sub(r"\\nsubset ", r"\\not\\subset ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
         output = re.sub(r"\\textit{(.*?)}", self.gen_dolor, output)
         output = re.sub(r"\\ding\{[0-9]+\}\\ding\{[0-9]+\}", self.convert_lable_to_character_entity, output)
