@@ -1,11 +1,10 @@
-#coding=utf-8
+# coding=utf-8
 
 import re
 from collections import defaultdict
 from xml.etree import ElementTree as ET
 
-
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Basic configuration - modify this to change output formatting
 _block_configuration = {
@@ -76,7 +75,8 @@ _block_configuration = {
     }
 }
 
-#------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
 
 class LaTeX2Markdown(object):
     """Initialise with a LaTeX string - see the main routine for examples of
@@ -84,9 +84,10 @@ class LaTeX2Markdown(object):
 
     To modify the outputted markdown, modify the _block_configuration variable
     before initializing the LaTeX2Markdown instance."""
-    def __init__(self,  config_path, latex_string,
-                        block_configuration = _block_configuration,
-                        block_counter = defaultdict(lambda: 1)):
+
+    def __init__(self, config_path, latex_string,
+                 block_configuration=_block_configuration,
+                 block_counter=defaultdict(lambda: 1)):
 
         self._block_configuration = block_configuration
         self._latex_string = latex_string
@@ -99,34 +100,34 @@ class LaTeX2Markdown(object):
         self._main_re = re.compile(r"""\\begin{document}
                                     (?P<main>.*)
                                     \\end{document}""",
-                                    flags=re.DOTALL + re.VERBOSE)
+                                   flags=re.DOTALL + re.VERBOSE)
 
         # Select all our block materials.
         self._block_re = re.compile(r"""\\begin{(?P<block_name>exer|proof|thm|lem|prop)} # block name
                                     (\[(?P<block_title>.*?)\])? # Optional block title
                                     (?P<block_contents>.*?) # Non-greedy block contents
-                                    \\end{(?P=block_name)}""", # closing block
+                                    \\end{(?P=block_name)}""",  # closing block
                                     flags=re.DOTALL + re.VERBOSE)
 
         # Select all our list blocks
         self._lists_re = re.compile(r"""\\begin{(?P<block_name>enumerate|itemize)} # list name
                                     (\[.*?\])? # Optional enumerate settings i.e. (a)
                                     (?P<block_contents>.*?) # Non-greedy list contents
-                                    \\end{(?P=block_name)}""", # closing list
+                                    \\end{(?P=block_name)}""",  # closing list
                                     flags=re.DOTALL + re.VERBOSE)
 
         # Select all our headers
         self._header_re = re.compile(r"""\\(?P<header_name>chapter|section|subsection) # Header
                                     {(?P<header_contents>.*?)}""",  # Header title
-                                    flags=re.DOTALL + re.VERBOSE)
+                                     flags=re.DOTALL + re.VERBOSE)
 
         # Select all our 'auxillary blocks' - these need special treatment
         # for future use - e.g. pygments highlighting instead of code blocks
         # in Markdown
         self._aux_block_re = re.compile(r"""\\begin{(?P<block_name>lstlisting)} # block name
                                     (?P<block_contents>.*?) # Non-greedy block contents
-                                    \\end{(?P=block_name)}""", # closing block
-                                    flags=re.DOTALL + re.VERBOSE)
+                                    \\end{(?P=block_name)}""",  # closing block
+                                        flags=re.DOTALL + re.VERBOSE)
 
     def _replace_header(self, matchobj):
         """Creates a header string for a section/subsection/chapter match.
@@ -143,9 +144,9 @@ class LaTeX2Markdown(object):
         separator = "-" if block_config.get("show_count") else ""
 
         output_str = "{header} {separator} {title}\n".format(
-                        header=header,
-                        title=header_contents,
-                        separator=separator)
+            header=header,
+            title=header_contents,
+            separator=separator)
 
         return output_str
 
@@ -166,18 +167,17 @@ class LaTeX2Markdown(object):
         # We have to format differently for lists
         if block_name in {"itemize", "enumerate"}:
             formatted_contents = self._format_list_contents(block_name,
-                                                        block_contents)
+                                                            block_contents)
         else:
             formatted_contents = self._format_block_contents(block_name,
-                                                        block_contents)
+                                                             block_contents)
 
         header = self._format_block_name(block_name, block_title)
 
         output_str = "{header}\n\n{block_contents}".format(
-                        header=header,
-                        block_contents=formatted_contents)
+            header=header,
+            block_contents=formatted_contents)
         return output_str
-
 
     def _format_block_contents(self, block_name, block_contents):
         """Format the contents of a block with configuration parameters
@@ -222,14 +222,14 @@ class LaTeX2Markdown(object):
         self._block_counter[block_name] += 1
 
         output_str = "{markdown_heading} {pretty_name} {block_count}".format(
-                        markdown_heading=markdown_heading,
-                        pretty_name=pretty_name,
-                        block_count=block_count)
+            markdown_heading=markdown_heading,
+            pretty_name=pretty_name,
+            block_count=block_count)
 
         if block_title:
             output_str = "{output_str} ({block_title})".format(
-                        output_str=output_str,
-                        block_title=block_title)
+                output_str=output_str,
+                block_title=block_title)
 
         return output_str.lstrip().rstrip()
 
@@ -276,7 +276,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\textit\{[^{^}]*\}", self.gen_dolor, output)
         output = re.sub(r"\\textbf{(.*?)}", r" **\1** ", output)
         output = re.sub(r"\\raisebox{[-+0-9\\.]*pt}{(.*?)}", r" **\1** ", output)
-        output = re.sub(r"\\underline{(.*?)}", r" <u>\1</u> ", output)
+        output = re.sub(r"\\underline{(.*?)}", self.gen_underline, output)
         output = re.sub(r"\\nsubset ", r"\\not\\subset ", output)
         output = re.sub(r"\\texttt{(.*?)}", self.gen_dolor, output)
         output = re.sub(r"\\textit{(.*?)}", self.gen_dolor, output)
@@ -286,7 +286,8 @@ class LaTeX2Markdown(object):
         output = re.sub(r"``[^`^']+''", self.replace_quotation_marks, output)
         output = re.sub(r"@\d{3}[A-Z_]{2,5}\|[A-Z]\d{1,3}(\\#\d{1,3})*@", self.fix_paper_mark, output)
         output = re.sub(r'\\begin\{table\}(?P<content>[\s\S]*?)\\end\{table\}', self.replace_laTex_table, output)
-        output = re.sub(r'\\begin{equation[\*]{0,1}}[\n\t\r]{0,1}([\s\S]*?)[\n\t\r]{0,1}\\end{equation[\*]{0,1}}', r'$\1$', output)
+        output = re.sub(r'\\begin{equation[\*]{0,1}}[\n\t\r]{0,1}([\s\S]*?)[\n\t\r]{0,1}\\end{equation[\*]{0,1}}',
+                        r'$\1$', output)
         output = re.sub(r'\\begin{align}([\s\S]*?)\\end{align}', r'$\\begin{aligned}\1\\end{aligned}$', output)
         output = re.sub(r'\$\{\\times\}\$', self.convert_lable_to_character_entity, output)
         output = re.sub(r'\$\{\\div\}\$', self.convert_lable_to_character_entity, output)
@@ -305,13 +306,21 @@ class LaTeX2Markdown(object):
     def to_markdown(self):
         return self._latex_to_markdown()
 
+    def gen_underline(self, matched):
+        source = matched.group()
+        regex = r"\\underline{(.*?)}"
+        new_match = re.match(regex, source)
+        w = new_match.group(1)
+        z = re.sub(r"\s", "&emsp;", w)
+        return "<u>%s</u>" % z
+
+
     def gen_dolor(self, matched):
         source = matched.group()
         ret = re.findall(r"(?<=\{)(.+?)(?=\})", source)
         if len(ret) > 0:
             return "$%s$ " % ret[0]
         return source
-
 
     def replace_LaTex_img_url(self, matched):
         graphic = matched.group()
@@ -364,11 +373,12 @@ class LaTeX2Markdown(object):
         return ret
 
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     import sys
     import os
+
     # base_path = os.path.dirname(__file__) + "/latex2markdown-bbsmp"
     base_path = os.path.dirname(__file__)
     config_xml = base_path + "/config/charmap.xml"
@@ -393,5 +403,3 @@ if __name__ == '__main__':
         # else:
         #     print(markdown_string)
         print(markdown_string)
-
-
