@@ -1,3 +1,7 @@
+<u>　　　&emsp;</u>
+<u>　　　</u>
+
+
 ###  Simple Examples
 
 
@@ -48,7 +52,7 @@ Choose a prime divisor $p_n$ of each Fermat number $F_n$.  By the lemma we know 
 ###  Demonstration of the environments
 
 
-We can format *italic text*, **bold text** , and  $code$  blocks.
+We can format *italic text*,  **bold text** , and $code$  blocks.
 
 
 
@@ -64,17 +68,17 @@ We can format *italic text*, **bold text** , and  $code$  blocks.
 
 #### Theorem 3
 
-> This is a theorem.  It contains an  $align$  block.
+> This is a theorem.  It contains an $align$  block.
 > 
 > All math environments supported by MathJaX should work with LaTeX - a full list is available on the MathJaX homepage.
 > 
 > Maxwell's equations, differential form.
-> \begin{align}
+> $\begin{aligned}
 > \nabla \cdot \mathbf{E} &= \frac {\rho} {\varepsilon_0} \\\\
 > \nabla \cdot \mathbf{B} &= 0 \\\\
 > \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}} {\partial t} \\\\
 > \nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}} {\partial t} \\\\
-> \end{align}
+> \end{aligned}$
 
 
 #### Theorem 4 (Theorem name)

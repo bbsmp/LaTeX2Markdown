@@ -311,7 +311,8 @@ class LaTeX2Markdown(object):
         regex = r"\\underline{(.*?)}"
         new_match = re.match(regex, source)
         w = new_match.group(1)
-        z = re.sub(r"\s", "&emsp;", w)
+        z = re.sub(r"\s\s", "　", w)
+        z = re.sub(r"\s", "&emsp;", z)
         return "<u>%s</u>" % z
 
 
