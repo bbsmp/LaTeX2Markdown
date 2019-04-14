@@ -1301,25 +1301,25 @@
     <!-- CIRCLED DIGIT TEN -->
     <char character="&#x2469;" string="\ding{181}"/>
     <!-- CIRCLED DIGIT ELEVEN -->
-    <char character="&#x246a;" string="\ding{172}\ding{172}"/>
-    <!-- CIRCLED DIGIT TWELVE -->
-    <char character="&#x246b;" string="\ding{172}\ding{173}"/>
-    <!-- CIRCLED DIGIT THIRTEEN -->
-    <char character="&#x246c;" string="\ding{172}\ding{174}"/>
-    <!-- CIRCLED DIGIT FOURTEEN -->
-    <char character="&#x246d;" string="\ding{172}\ding{175}"/>
-    <!-- CIRCLED DIGIT FIVTEEN -->
-    <char character="&#x246e;" string="\ding{172}\ding{176}"/>
-    <!-- CIRCLED DIGIT SIXTEEN -->
-    <char character="&#x246f;" string="\ding{172}\ding{177}"/>
-    <!-- CIRCLED DIGIT SEVENTEEN -->
-    <char character="&#x2470;" string="\ding{172}\ding{178}"/>
-    <!-- CIRCLED DIGIT EIGHTEEN -->
-    <char character="&#x2471;" string="\ding{172}\ding{179}"/>
-    <!-- CIRCLED DIGIT NINETEEN -->
-    <char character="&#x2472;" string="\ding{172}\ding{180}"/>
-    <!-- CIRCLED DIGIT TWENTY -->
-    <char character="&#x2473;" string="\ding{173}\ding{173}"/>
+    <!--<char character="&#x246a;" string="\ding{172}\ding{172}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT TWELVE &ndash;&gt;-->
+    <!--<char character="&#x246b;" string="\ding{172}\ding{173}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT THIRTEEN &ndash;&gt;-->
+    <!--<char character="&#x246c;" string="\ding{172}\ding{174}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT FOURTEEN &ndash;&gt;-->
+    <!--<char character="&#x246d;" string="\ding{172}\ding{175}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT FIVTEEN &ndash;&gt;-->
+    <!--<char character="&#x246e;" string="\ding{172}\ding{176}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT SIXTEEN &ndash;&gt;-->
+    <!--<char character="&#x246f;" string="\ding{172}\ding{177}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT SEVENTEEN &ndash;&gt;-->
+    <!--<char character="&#x2470;" string="\ding{172}\ding{178}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT EIGHTEEN &ndash;&gt;-->
+    <!--<char character="&#x2471;" string="\ding{172}\ding{179}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT NINETEEN &ndash;&gt;-->
+    <!--<char character="&#x2472;" string="\ding{172}\ding{180}"/>-->
+    <!--&lt;!&ndash; CIRCLED DIGIT TWENTY &ndash;&gt;-->
+    <!--<char character="&#x2473;" string="\ding{173}\ding{173}"/>-->
     <!-- PARENTHESIZED DIGIT ONE -->
     <char character="&#x2474;" string="(1)"/>
     <!-- PARENTHESIZED DIGIT TWO -->
