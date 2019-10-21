@@ -299,6 +299,8 @@ class LaTeX2Markdown(object):
         # Fix argmax, etc.
         output = re.sub(r"\\arg(max|min)", r"\\text{arg\1}", output)
 
+        #format formula
+        output = re.sub(r"(\\[A-Za-z^\\]+)( \$)", r"\1$", output)
         # Throw away content in IGNORE/END block
         output = re.sub(r"% LaTeX2Markdown IGNORE(.*?)\% LaTeX2Markdown END",
                         "", output, flags=re.DOTALL)
@@ -363,7 +365,7 @@ class LaTeX2Markdown(object):
         is_head = True
         for line in table.split("\n"):
             if '&' in line:
-                line = re.sub(r"\\\\+$", '', line)
+                line = re.sub(r"\\\\+(hline)?$", '', line)
                 values = line.replace("&", "|")
                 values = "|%s|\n" % values
                 ret += values
