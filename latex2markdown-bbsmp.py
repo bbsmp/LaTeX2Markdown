@@ -269,6 +269,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r"\\[tT]ext[bB]ack[sS]lash", r"\backslash", output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textbar}", self.convert_lable_to_character_entity, output)
+        output = re.sub(r"\\textemdash{}", "-", output)
         output = re.sub(r"{\\ldots}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"{\\textgreater}", self.convert_lable_to_character_entity, output)
         output = re.sub(r"\\textasciicircum{(.*?)}", self.convert_lable_to_character_entity, output)
@@ -366,6 +367,7 @@ class LaTeX2Markdown(object):
         for line in table.split("\n"):
             if '&' in line:
                 line = re.sub(r"\\\\+(hline)?$", '', line)
+                line = re.sub(r"(\\)*hline", '', line)
                 values = line.replace("&", "|")
                 values = "|%s|\n" % values
                 ret += values
