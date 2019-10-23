@@ -295,6 +295,7 @@ class LaTeX2Markdown(object):
         output = re.sub(r'\$\{\\div\}\$', self.convert_lable_to_character_entity, output)
 
         output = re.sub(r"\\newline", r"\n", output)
+        output = re.sub(r"(\\)*hline", r'', output)
         # Fix \% formatting
         output = re.sub(r"\\%", r"%", output)
         # Fix argmax, etc.
@@ -367,7 +368,6 @@ class LaTeX2Markdown(object):
         for line in table.split("\n"):
             if '&' in line:
                 line = re.sub(r"\\\\+(hline)?$", '', line)
-                line = re.sub(r"(\\)*hline", '', line)
                 values = line.replace("&", "|")
                 values = "|%s|\n" % values
                 ret += values
